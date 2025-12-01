@@ -1,11 +1,11 @@
 package com.studrecord.StudRecord.models;
 
-public class Grade {
+public class EnrolledDisciplines {
     private int id;
-    private int discipline_id;
     private int student_id;
-    private int grade;
+    private int discipline_id;
     private String date;
+    private String status;
 
     public int getId() {
         return id;
@@ -13,14 +13,6 @@ public class Grade {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getDiscipline_id() {
-        return discipline_id;
-    }
-
-    public void setDiscipline_id(int discipline_id) {
-        this.discipline_id = discipline_id;
     }
 
     public int getStudent_id() {
@@ -31,12 +23,12 @@ public class Grade {
         this.student_id = student_id;
     }
 
-    public int getGrade() {
-        return grade;
+    public int getDiscipline_id() {
+        return discipline_id;
     }
 
-    public void setGrade(int grade) {
-        this.grade = grade;
+    public void setDiscipline_id(int discipline_id) {
+        this.discipline_id = discipline_id;
     }
 
     public String getDate() {
@@ -45,5 +37,13 @@ public class Grade {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

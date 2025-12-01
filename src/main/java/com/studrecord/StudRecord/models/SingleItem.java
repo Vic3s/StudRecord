@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SingleItem {
-    public int id;
-    public String firstName;
-    public String lastName;
-    public int ucn;
-    public ArrayList<Grade> grades;
-    public ArrayList<SemesterGrade> semesterGrades;
-    public ArrayList<Complaint> complaints;
-    public ArrayList<Commendation> commendations;
-    public ArrayList<String> enrolledDisciplines;
+    private int id;
+    private String firstName;
+    private String lastName;
+    private int ucn;
+    private ArrayList<EnrolledDisciplines> enrolledDisciplines;
+    private ArrayList<Grade> grades;
+    private ArrayList<SemesterGrade> semesterGrades;
+    private ArrayList<Complaint> complaints;
+    private ArrayList<Commendation> commendations;
 
     public int getId() {
         return id;
@@ -78,11 +78,11 @@ public class SingleItem {
         this.commendations = new ArrayList<>(commendations);
     }
 
-    public ArrayList<String> getEnrolledDisciplines() {
+    public ArrayList<EnrolledDisciplines> getEnrolledDisciplines() {
         return enrolledDisciplines;
     }
 
-    public void setEnrolledDisciplines(List<String> enrolledDisciplines) {
+    public void setEnrolledDisciplines(List<EnrolledDisciplines> enrolledDisciplines) {
         this.enrolledDisciplines = new ArrayList<>(enrolledDisciplines);
     }
 
