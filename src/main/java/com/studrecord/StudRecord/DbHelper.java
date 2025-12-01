@@ -20,26 +20,23 @@ public class DbHelper {
 //    @Value("${database.password}")
     private static String dbPassword = "npg_s0QBEy9oWLKT";
 
-    private static Connection CreateConnection(){
+    public static Connection CreateConnection(){
         Connection conn = null;
         try{
             conn = DriverManager.getConnection(dbConnectionString, dbOwner, dbPassword);
             System.out.println("Connection established successfully");
-            return conn;
-
         }catch(Exception ex){
             System.out.println(ex.getMessage());
         }
         return conn;
     }
 
-    public static SingleItem GetSingleItem(int id){
+    public static SingleItem GetSingleItem(int id, Connection conn){
         SingleItem singleItem = new SingleItem();
-        Connection conn = CreateConnection();
 
         try{
             // Get basic student information by id
-            String query_stud_info = "SELECT * FROM student WHERE id=?;";
+            String query_stud_info = "SELECT * FROM students WHERE id=?;";
 
             try(PreparedStatement stm = conn.prepareStatement(query_stud_info) ){
                 stm.setInt(1, id);
@@ -174,18 +171,31 @@ public class DbHelper {
 
         }catch(Exception ex){
             System.out.println("Exception: " + ex.getMessage());
-        }finally {
-            try { conn.close(); } catch (Exception ignored){}
         }
 
         return singleItem;
     }
 
-    public static ArrayList<SingleItem> getAllItems(){
+    public static ArrayList<SingleItem> getAllItems(Connection conn){
         ArrayList<SingleItem> allItems = new ArrayList<>();
 
-//        String query_all_studs = "";
+        try{
+            String query_all_studs = "SELECT * FROM students";
 
+            try(PreparedStatement stm = conn.prepareStatement(query_all_studs)){
+                ResultSet rs = stm.executeQuery();
+
+                while(rs.next()){
+                    SingleItem student = GetSingleItem(rs.getInt("id"), conn);
+                    allItems.add(student);
+                }
+            }catch(Exception ex){
+                System.out.println("Error: " + ex.getMessage());
+            }
+
+        }catch(Exception ex){
+            System.out.println("Exception: " + ex.getMessage());
+        }
 
         return allItems;
     }
