@@ -1,5 +1,6 @@
 package com.studrecord.StudRecord;
 import com.studrecord.StudRecord.models.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.sql.Connection;
@@ -11,19 +12,16 @@ import java.util.List;
 
 public class DbHelper {
 
-//    @Value("${database.connection.string}")
-    private static String dbConnectionString = "jdbc:postgresql://ep-silent-wildflower-a41p6ovg-pooler.us-east-1.aws.neon.tech/StudRecord?sslmode=require&channel_binding=require";
-
-//    @Value("${database.owner}")
-    private static String dbOwner = "neondb_owner";
-
-//    @Value("${database.password}")
-    private static String dbPassword = "npg_s0QBEy9oWLKT";
+    @Autowired
+    private static DbConfig dbConfig;
 
     public static Connection CreateConnection(){
         Connection conn = null;
         try{
-            conn = DriverManager.getConnection(dbConnectionString, dbOwner, dbPassword);
+            conn = DriverManager.getConnection(
+                    dbConfig.getDbUrl(),
+                    dbConfig.getDbUser(),
+                    dbConfig.getDbPassword());
             System.out.println("Connection established successfully");
         }catch(Exception ex){
             System.out.println(ex.getMessage());
@@ -176,7 +174,7 @@ public class DbHelper {
         return singleItem;
     }
 
-    public static ArrayList<SingleItem> getAllItems(Connection conn){
+    public static ArrayList<SingleItem> GetAllItems(Connection conn){
         ArrayList<SingleItem> allItems = new ArrayList<>();
 
         try{
@@ -200,16 +198,27 @@ public class DbHelper {
         return allItems;
     }
 
-    public static ArrayList<SingleItem> getMultipleItems(String condition){
+    public static ArrayList<SingleItem> GetMultipleItems(String condition, Connection conn){
         ArrayList<SingleItem> multipleItems = new ArrayList<>();
 
-        // using the condition
-        // functionality to get multiple items one by one with a loop
-        // instantiate them as a SingleItem objects and map them
-        // and then put in the arraylist
+        try{
+            String query_w_condition =  String.format("SELECT DISTINCT * FROM stud_full_view WHERE %s;", condition);
+
+            try(PreparedStatement stm = conn.prepareStatement(query_w_condition)){
+                ResultSet rs = stm.executeQuery();
+
+                while(rs.next()){
+                    SingleItem student = GetSingleItem(rs.getInt("student_id"), conn);
+                    multipleItems.add(student);
+                }
+            }catch(Exception ex){
+                System.out.println("Error: " + ex.getMessage());
+            }
+        }catch(Exception ex){
+            System.out.println("Exception: " + ex.getMessage());
+        }
 
         return multipleItems;
-
     }
 
 }
