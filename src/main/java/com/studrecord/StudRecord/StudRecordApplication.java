@@ -5,18 +5,20 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.sql.Connection;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @SpringBootApplication
 public class StudRecordApplication {
 
 	public static void main(String[] args) {
+		HashMap<String, String> UpdateKeyValues = new HashMap<>();
+
+		UpdateKeyValues.put("first_name", "Nathaniel");
+		UpdateKeyValues.put("last_name", "Pegasus");
 
 		try(Connection conn = DbHelper.CreateConnection();){
-			ArrayList<SingleItem> multipleStudents = DbHelper.GetMultipleItems("student_id=1083 AND discipline_id=100", conn);
+			DbHelper.UpdateSingleItem(conn, UpdateKeyValues, 1083);
 
-			for(int i=0; i<multipleStudents.size(); i++){
-				System.out.println(multipleStudents.get(i).getFirstName() + " " + multipleStudents.get(i).getLastName());
-			}
 		}catch (Exception ex){
 			System.out.println(ex.getMessage());
 		}

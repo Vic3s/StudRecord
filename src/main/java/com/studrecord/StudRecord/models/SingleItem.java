@@ -13,6 +13,14 @@ public class SingleItem {
     private ArrayList<SemesterGrade> semesterGrades;
     private ArrayList<Complaint> complaints;
     private ArrayList<Commendation> commendations;
+    private String class_;
+
+    public String getClass_() {
+        return class_;
+    }
+    public void setClass_(String class_) {
+        this.class_ = class_;
+    }
 
     public int getId() {
         return id;
